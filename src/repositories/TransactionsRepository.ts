@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import Transaction from '../models/Transaction'
 
 interface Balance {
@@ -23,11 +24,33 @@ class TransactionsRepository {
     return this.transactions
   }
 
-  /*
   public getBalance(): Balance {
-    return
+    const balance = this.transactions.reduce(
+      (aggregate: Balance, transaction: Transaction) => {
+        switch (transaction.type) {
+          case 'income':
+            aggregate.income += transaction.value
+            break
+          case 'outcome':
+            aggregate.outcome += transaction.value
+            break
+          default:
+            break
+        }
+
+        aggregate.total = aggregate.income - aggregate.outcome
+
+        return aggregate
+      },
+      {
+        income: 0,
+        outcome: 0,
+        total: 0,
+      },
+    )
+
+    return balance
   }
-  */
 
   public create({ title, value, type }: CreateTransactionDTO): Transaction {
     const transaction = new Transaction({ title, value, type })
